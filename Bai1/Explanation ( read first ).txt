@@ -1,0 +1,56 @@
+bai1(0xba6c5a02,0xd101e3dd,0xbb86a173)
+
+
+Trước khi phân tích ta cần hiểu rõ về thanh ghi
+
+đầu tiên 
+
+thanh ghi rax ( 64 bit ) có tổng cộng 64 chữ chỗ 1 or 0 trong thanh ghi và  thanh eax sẽ nằm 1/2 byte thanh ghi này ( tức là nó
+có ảnh hưởng tới thanh rax khi bạn modify value của eax thì rax cũng sẽ thay đổi. Tất nhiên trong thanh eax thì tồn tại thêm 3 thanh nữa
+( mở file excel nhìn bên chữ đỏ để hiểu hơn và bạn có thể thay đổi thử 1 value của thanh bất kì thì mấy thanh kia sẽ thay đổi theo)
+
+
+<+0>:	push   ebp
+
+-->Đây thanh ghi 32 bit base pointer mà chương trình đẩy vào để lưu trữ 3 paramaters từ hàm đưa vào để tính toán các giá trị
+
+<+1>:	mov    ebp,esp
+
+--> Đoạn này đưa con trỏ stack lên chỗ thằng base pointer đang giữ để nó trỏ vào dữ liệu 
+
+<+3>:	xor    eax,eax ;0x00000000
+-->Reset value eax  ( tương tự eax = 0 ) 
+
+<+5>:	mov    ah,BYTE PTR [ebp+0xb] ; 0xb = 11
+
+-> Tại đoạn này ta thấy thanh ghi ah (8 bit) được gọi ra và dùng con trỏ BYTE PTR trỏ vào thằng stack có giá trị thứ 11 byte  
+để nhập vào thanh ah = lệnh mov.
+
+<+8>:	shl    ax,0x10 ;
+
+---> shl là shift left tức là dịch bit sang trái 16 byte (0x10) rồi lưu vào thanh ax ( điều này làm thay đổi value of eax )
+
+<+12>:	sub    al,BYTE PTR [ebp+0xe] ; 0xe = 14
+--> Sub là subtract tức là phép trừ (trong C nó tương tự c = c - ebp[14] ) , tức nhiên thanh al sẽ thay đổi thanh ax và nó thay đổi thanh eax
+
+<+15>:	add    ah,BYTE PTR [ebp+0xf] ;0xf = 15
+
+--> Dòng này add là thêm , tức là cộng giống ở trên ( ah = ah + ebp[15] )
+
+<+18>:	xor    ax,WORD PTR [ebp+0x12] ;18
+
+--> Phép xor ax với giá trị thứ 12 của ebp 
+
+<+23>:	pop    ebp
+<+24>:	ret    
+
+cuối cùng giải phóng thanh ebp rùi in giá trị ra 
+
+Vậy chương trình cơ bản này là đưa 3 giá trị vào stack rồi lấy từng value thứ i ra để tính toán các phép toán + , -, và xor rồi cuối cùng đưa
+output ra màn hình.
+
+result = 56730 ( 0xDD9A )
+
+
+
+

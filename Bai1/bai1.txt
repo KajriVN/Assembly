@@ -1,0 +1,15 @@
+bai1:
+	<+0>:	push   ebp
+	<+1>:	mov    ebp,esp ;tro con tro esp vào ebp
+	<+3>:	xor    eax,eax ;reset thanh eax
+	<+5>:	mov    ah,BYTE PTR [ebp+0xb] ( ebp + 11 )
+	<+8>:	shr    ax,0x10 ;dich bit 0-15 cua thanh eax sang phai 16 don vi
+	<+12>:	sub    al,BYTE PTR [ebp+0xd] ;13 -227
+	<+15>:	add    ah,BYTE PTR [ebp+0xc] ;12 : 221
+	<+18>:	xor    ax,WORD PTR [ebp+0x12] : ax : 134
+	<+22>:	nop
+	<+23>:	pop    ebp
+	<+24>:	ret    
+;
+result = 56730
+	

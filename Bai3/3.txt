@@ -1,0 +1,55 @@
+foo(char*):
+        push    rbp
+        mov     rbp, rsp
+        mov     QWORD PTR [rbp-24], rdi         
+        mov     DWORD PTR [rbp-4], 59
+        mov     DWORD PTR [rbp-8], 0
+        jmp     .L2                             
+.L3:
+        mov     eax, DWORD PTR [rbp-8] 
+        movsx   rdx, eax
+        mov     rax, QWORD PTR [rbp-24]
+        add     rax, rdx
+        movzx   eax, BYTE PTR [rax]
+        movsx   edx, al
+        mov     eax, DWORD PTR [rbp-4]
+        imul    eax, eax, 271
+        add     eax, edx
+        mov     DWORD PTR [rbp-4], eax
+        add     DWORD PTR [rbp-8], 1
+.L2:
+        cmp     DWORD PTR [rbp-8], 9
+        jle     .L3
+        mov     eax, DWORD PTR [rbp-4]
+        and     eax, 2097151
+        pop     rbp
+        ret
+
+- Tính toán giá trị với tham số được truyền vào hàm foo: foo("qwerty0123").
+- Giải thích đoạn mã trên và khôi phục lại đoạn mã.
+foo(char*):
+        push    rbp
+        mov     rbp, rsp
+        mov     QWORD PTR [rbp-24], rdi         
+        mov     Total, 59
+        mov     I, 0
+        jmp     .L2                             
+.L3:
+        mov     eax, I 
+        movsx   rdx, eax
+        mov     rax, QWORD PTR [rbp-24]
+        add     rax, rdx
+        movzx   eax, BYTE PTR [rax]
+        movsx   edx, al //lay 1 byte cuoi
+        mov     eax, Total
+        imul    eax, eax, 271
+        add     eax, edx
+        mov     Total, eax
+        add     I, 1
+.L2:
+        cmp     I, 9
+        jle     .L3
+        mov     eax, Total
+        and     eax, 2097151
+        pop     rbp
+        ret
